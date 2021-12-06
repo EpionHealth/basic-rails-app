@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Provisions Aptible app + db
+
+if [ -z "$1" ]; then
+  exit "Include environment"
+fi
+
+env=$1
+app_name="basic-rails-app"
+db_name="basic-rails-app-db"
+
+aptible apps:create $app_name --environment $env >> git_remote.log
+
+git_remote=`cat git_remote.log`
+
+git remote remove aptible || "Aptible git remote does not exist."
+git remote add aptible $git_remote
+
+aptible db:create $db_name --type postgresql --version 13 --environment $env >> db_cred.log
+
+db_cred=`cat db_cred.log`
+
+aptible config:set --app $app_name --environment $env DATABASE_URL=$db_cred
+
+git push aptible main

@@ -7,10 +7,6 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-*
-
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -31,6 +27,11 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore local secrets files
+db_cred.log
+git_remote.log
+.env
 
 /public/packs
 /public/packs-test

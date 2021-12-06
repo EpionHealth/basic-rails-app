@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# Deprovisions Aptible app + db
+
+if [ -z "$1" ]; then
+  exit "Include environment"
+fi
+
+basic_env=$1
+
+aptible apps:deprovision basic-rails-app --environment $basic_env
+
+aptible db:deprovision basic-rails-app-db --type postgresql --version 13 --environment $basic_env

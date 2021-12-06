@@ -6,9 +6,11 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # If you require additional OS dependencies, install them here:
-# RUN apt-get update \
-#  && apt-get -y install imagemagick nodejs \
-#  && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+ && apt-get -y install nodejs \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN npm install --global yarn
 
 ADD Gemfile /app/
 ADD Gemfile.lock /app/

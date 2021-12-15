@@ -29,6 +29,8 @@
 /config/master.key
 
 # Ignore local secrets files
+env_down*.log
+env_up*.log
 db_cred.log
 git_remote.log
 .env

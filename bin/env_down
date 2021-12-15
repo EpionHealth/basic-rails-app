@@ -7,7 +7,9 @@ if [ -z "$1" ]; then
 fi
 
 basic_env=$1
+started_at=$(date +'%Y_%m_%d_%H_%M_%S')
+log_file="env_down-$started_at.log"
 
-aptible apps:deprovision basic-rails-app --environment $basic_env
+unbuffer aptible apps:deprovision basic-rails-app --environment $basic_env 2>&1 | tee -a $log_file
 
-aptible db:deprovision basic-rails-app-db --type postgresql --version 13 --environment $basic_env
+unbuffer aptible db:deprovision basic-rails-app-db --type postgresql --version 13 --environment $basic_env 2>&1 | tee -a $log_file

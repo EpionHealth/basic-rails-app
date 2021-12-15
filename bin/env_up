@@ -7,20 +7,22 @@ if [ -z "$1" ]; then
 fi
 
 env=$1
+started_at=$(date +'%Y_%m_%d_%H_%M_%S')
 app_name="basic-rails-app"
 db_name="basic-rails-app-db"
+log_file="env_up-$started_at.log"
 
-aptible apps:create $app_name --environment $env >> git_remote.log
+aptible apps:create $app_name --environment $env >> git_remote.log 2>&1 | tee -a $log_file
 
 git_remote=`cat git_remote.log`
 
 git remote remove aptible || "Aptible git remote does not exist."
 git remote add aptible $git_remote
 
-aptible db:create $db_name --type postgresql --version 13 --environment $env >> db_cred.log
+aptible db:create $db_name --type postgresql --version 13 --environment $env >> db_cred.log 2>&1 | tee -a $log_file
 
 db_cred=`cat db_cred.log`
 
-aptible config:set --app $app_name --environment $env DATABASE_URL=$db_cred
+aptible config:set --app $app_name --environment $env DATABASE_URL=$db_cred RAILS_ENV=production RACK_ENV=production 2>&1 | tee -a $log_file
 
-git push aptible main
+git push aptible main:master 2>&1 | tee -a $log_file
